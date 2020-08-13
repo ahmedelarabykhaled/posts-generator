@@ -34,13 +34,15 @@ jQuery(document).ready(function ($) {
 
 });
 
-function deleteFile(id, url) {
-    console.log(id);
+function deleteFile(id, url, widget_base_id, current_widget_id) {
+    console.log(url, widget_base_id, current_widget_id);
     jQuery.ajax({
         url: url,
         type: 'post',
         data: {
-            'file_id': id,
+            'record_id': id,
+            'widget_base': widget_base_id,
+            'current_widget_id': current_widget_id
         },
         success: function (data) {
             console.log(data);

@@ -65,16 +65,26 @@ class PostGenerator extends WP_Widget
     {
 
         // echo "<hr>"; 
-        // print_r($instance);      
+        // $widget_instances = get_option( 'widget_'.$this->id_base );
+        // $current_widget = $widget_instances[end(explode("-",$this->id))];
+        // $widget_instances[end(explode("-",$this->id))] = [];
+        // update_option('widget_'.$this->id_base,$widget_instances);
+        // print_r($widget_instances);      
+        // echo "<hr>"; 
+        // print_r($current_widget);
 
         $instance = wp_parse_args((array)$instance, array('display_year' => '', 'records' => ''));
 
         $display_year = isset($instance['display_year']) ? (bool)$instance['display_year'] : false;
         $records = isset($instance['records']) ? $instance['records'] : '';
 
+        $delete_record_handler = plugins_url('posts-generator/includes/services/deleteFile.php');
+        $widget_base_id        = 'widget_'.$this->id_base;
+        $current_widget_id     = end(explode("-",$this->id));
         ?>
 
         <?php if ($records): ?>
+        
         <div class="pg-records-table widefat">
             <hr>
             <table>
@@ -93,7 +103,13 @@ class PostGenerator extends WP_Widget
                             <input 
                                 type="button" 
                                 value="X" 
-                                onclick="deleteFile(<?=$key?>,'<?=plugins_url('posts-generator/includes/services/deleteFile.php')?>')">
+                                onclick="deleteFile(
+                                    <?=$key?>,
+                                    '<?=$delete_record_handler?>',
+                                    '<?=$widget_base_id?>',
+                                    '<?=$current_widget_id?>'
+                                    )"
+                            >
                         </td>
                     </tr>
                 <?php endforeach ?>
