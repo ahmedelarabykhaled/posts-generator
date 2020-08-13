@@ -31,15 +31,18 @@ jQuery(document).ready(function ($) {
         // Finally, open the modal
         file_frame.open();
     });
+    function DeleteFile() {
+        console.log("clicked");
+        //
+        // $.ajax({
+        //     url: url,
+        //     type: 'POST',
+        //     data: {
+        //         'file_id' : id,
+        //     },
+        //     success: function (data) {
+        //         console.log(data);
+        //     }
+        // });
+    }
 });
-
-// jQuery(document).ready(function ($) {
-//     console.log($(".post-generator-data input"));
-//     $(".post-generator-data input").keyup(function (e) {
-//         console.log(e.target.value);
-//     })
-
-//     console.log();
-//     $("#widget-postgenerator_widget-3-savewidget").attr('value', 'xx');
-// })
-
