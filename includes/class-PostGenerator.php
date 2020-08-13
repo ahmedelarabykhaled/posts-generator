@@ -68,16 +68,6 @@ class PostGenerator extends WP_Widget{
         $display_year = isset($instance['display_year']) ? (bool) $instance['display_year'] : false;
         $records      = isset($instance['records'])      ? $instance['records'] : '';
         
-        echo "<hr>";
-        print_r($instance);
-        echo "<hr>";
-        print_r($instance['records']);
-        echo "<hr>";  
-        
-        // $record_id   = isset($instance['record_id'])? $instance['record_id'] : '';
-        // $title       = isset($instance['title'])? $instance['title'] :'';
-        // $issue_year  = isset($instance['issue_year']) ? $instance['issue_year'] :'';
-        // $description = isset($instance['description']) ? $instance['description'] :'';        
         ?>
 
         <?php if($records): ?>

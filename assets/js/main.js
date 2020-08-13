@@ -2,14 +2,14 @@ jQuery(document).ready(function ($) {
 
     $(document).on("click", ".upload_image_button", function (e) {
         e.preventDefault();
-        var $button = $(this);
 
+        var $button = $(this);
 
         // Create the media frame.
         var file_frame = wp.media.frames.file_frame = wp.media({
             title: 'Select or upload image',
             library: { // remove these to show all
-                type: 'image' // specific mime
+                type: 'pdf' // specific mime
             },
             button: {
                 text: 'Select'
@@ -22,8 +22,6 @@ jQuery(document).ready(function ($) {
             // We set multiple to false so only get one image from the uploader
 
             var attachment = file_frame.state().get('selection').first().toJSON();
-
-            console.log(attachment);
 
             // hidden input
             $button.siblings('input.fileURL').val(attachment.url);
