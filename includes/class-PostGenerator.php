@@ -80,7 +80,7 @@ class PostGenerator extends WP_Widget
 
         $delete_record_handler = plugins_url('posts-generator/includes/services/deleteFile.php');
         $widget_base_id        = 'widget_'.$this->id_base;
-        $current_widget_id     = end(explode("-",$this->id));
+        $current_widget_id     = strval(end(explode("-",$this->id)));
         ?>
 
         <?php if ($records): ?>
