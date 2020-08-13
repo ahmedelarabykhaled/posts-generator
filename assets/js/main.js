@@ -38,7 +38,7 @@ function deleteFile(id, url) {
     console.log(id);
     jQuery.ajax({
         url: url,
-        type: 'get',
+        type: 'post',
         data: {
             'file_id': id,
         },
