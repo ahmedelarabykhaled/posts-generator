@@ -1,0 +1,6 @@
+.pg-records-table table, .pg-records-table th, .pg-records-table td{
+    padding: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+

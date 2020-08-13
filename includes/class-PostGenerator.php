@@ -27,19 +27,26 @@ class PostGenerator extends WP_Widget{
      * @param array $instance Saved values from database.
      */
     public function widget( $args, $instance ) {
+        wp_enqueue_style('pg-main-style', plugins_url(). '/post-generator/assets/css/style.css');
+        echo $args['before_widget'];
+        ?>
 
-        // $title = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Categories' );
-        // $issue_year = isset($instance['issue_year']) ? $instance['issue_year'] :'';
-        // $description = isset($instance['description']) ? $instance['description'] :'';
-        // echo "<div class='widget'>";
-        // echo "<h3>$title</h3>";
-        // echo "<h3>$issue_year</h3>";
-        // echo "<h3>$description</h3>";
-        // echo "</div>";
-        echo '<a href="#">
-        <img src="'.esc_url($instance['image_uri']).'" />
-        </a>';
-  
+        <div id="islam123">
+
+            <div class="issue-year">
+                <form action="">
+                    <label for="issue_year">Issue Year:</label>
+                    <select name="issue_year" id="issue_year">
+                        <option value="1">11</option>
+                        <option value="1">11</option>
+                        <option value="1">11</option>
+                        <option value="1">11</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+        <?php
+        echo $args['after_widget'];
     }
  
     /**
@@ -72,13 +79,6 @@ class PostGenerator extends WP_Widget{
         ?>
 
         <?php if($records): ?>
-        <style>
-        .pg-records-table table, .pg-records-table th, .pg-records-table td{
-            padding: 10px;
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-        </style>
         <div class="pg-records-table widefat">
         <hr>
             <table>
@@ -88,12 +88,14 @@ class PostGenerator extends WP_Widget{
                 <th>Description</th>
                 <th>Action</th>
             </tr>
-            <?php foreach($records as $record):?>
+            <?php foreach($records as $key => $record):?>
             <tr>
                 <td><?php echo $record['title'] ?></td>
                 <td><?php echo $record['issue_year'] ?></td>
                 <td><?php echo $record['description'] ?></td>
-                <td>Remove Action</td>
+                <td><form action="#" method="post">
+                    <input  type="button" value="X"> 
+                </form></td>
             </tr>
             <?php endforeach ?>
             </table>
@@ -111,7 +113,7 @@ class PostGenerator extends WP_Widget{
 
 
         <!-- Record Data -->
-        <p>
+        <p class="post-generator-data">
             <label for="<?php echo $this->get_field_name( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
             <input 
                 class="widefat" 
@@ -138,8 +140,6 @@ class PostGenerator extends WP_Widget{
                 name="<?php echo $this->get_field_name( 'issue_year' ); ?>" 
                 value="<?php echo esc_attr( $issue_year )?>"
             >
-        </p>
-        <p>
             <label for="<?php echo $this->get_field_name( 'description' ); ?>"><?php _e('Description:'); ?></label>
             <textarea 
                 class="widefat" 

@@ -23,3 +23,6 @@ function register_PostGenerator(){
 add_action('widgets_init', 'register_PostGenerator');
 
 add_action('admin_enqueue_scripts', 'pg_add_scripts');
+
+
+
