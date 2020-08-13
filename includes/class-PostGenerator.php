@@ -3,6 +3,8 @@
 class PostGenerator extends WP_Widget{
 
     function __construct(){
+        wp_enqueue_script( 'media-upload' );
+        wp_enqueue_media();
         parent::__construct(
             'postgenerator_widget', // Base ID
             esc_html__( 'Posts Generator', 'pg_domain'), // Name
@@ -148,9 +150,14 @@ class PostGenerator extends WP_Widget{
                 id="<?php echo $this->get_field_name( 'description' ); ?>"
                 name="<?php echo $this->get_field_name( 'description' ); ?>" 
             ><?php echo esc_attr( $description )?></textarea>
-        </p>
 
-       <input type="file" name="<?php echo $this->get_field_name('file'); ?>" id="">
+            <input 
+                type="text" 
+                name= <?php echo $this->get_field_name( 'file_url' ); ?>
+                class="fileURL" 
+                value="">
+            <button class="upload_image_button">Upload Image</button>
+        </p>
         
         <?php
     }
@@ -170,22 +177,22 @@ class PostGenerator extends WP_Widget{
         $instance = array();
 
         $instance['display_year'] = (!empty($new_instance['display_year'])) ? 1 : 0 ;
-        $instance['file']         = (!empty($new_instance['file'])) ? $new_instance['file'] : $_FILES['file'] ;
 
 
-        // $record_id   = ( !empty( $new_instance['record_id'])) ? strip_tags( $new_instance['record_id'] )    : '';        
-        $title       = ( !empty( $new_instance['title']))     ? strip_tags( $new_instance['title'] )        : '';
+        $title       = ( !empty( $new_instance['title']))       ? strip_tags( $new_instance['title'] )        : '';
         $issue_year  = ( !empty( $new_instance['issue_year']))  ? strip_tags( $new_instance['issue_year'])  : '';
         $description = ( !empty( $new_instance['description'])) ? strip_tags( $new_instance['description']) : '';
-
+        $file_url    = (!empty($new_instance['file_url']))      ? strip_tags($new_instance['file_url']) : '' ;
+        
         // Newly added record
         $record_data = array(
             "title"       => $title,
             "issue_year"  => $issue_year,
-            "description" => $description
+            "description" => $description,
+            "file_url"    => $file_url
         );
 
-        if(!$title || !$issue_year || !$description){
+        if(!$title || !$issue_year || !$description || !$file_url){
             $instance['records'] = $old_instance['records'];
             return $instance;
         }
@@ -200,13 +207,5 @@ class PostGenerator extends WP_Widget{
         return $instance;
     }
 
-
-    private function generate_record_id($records){
-        if(empty($records)){
-            return 0;
-        }
-        
-        // else return id = last id +1
-    }
 }
 
