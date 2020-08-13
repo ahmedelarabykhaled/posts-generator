@@ -90,7 +90,10 @@ class PostGenerator extends WP_Widget
                         <td><?php echo $record['issue_year'] ?></td>
                         <td><?php echo $record['description'] ?></td>
                         <td>
-                            <input type="button" value="X" onclick="DeleteFile()">
+                            <input 
+                                type="button" 
+                                value="X" 
+                                onclick="deleteFile(<?=$key?>,'<?=plugins_url('posts-generator/includes/services/deleteFile.php')?>')">
                         </td>
                     </tr>
                 <?php endforeach ?>

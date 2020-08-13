@@ -31,18 +31,22 @@ jQuery(document).ready(function ($) {
         // Finally, open the modal
         file_frame.open();
     });
-    function DeleteFile() {
-        console.log("clicked");
-        //
-        // $.ajax({
-        //     url: url,
-        //     type: 'POST',
-        //     data: {
-        //         'file_id' : id,
-        //     },
-        //     success: function (data) {
-        //         console.log(data);
-        //     }
-        // });
-    }
+
 });
+
+function deleteFile(id, url) {
+    console.log(id);
+    jQuery.ajax({
+        url: url,
+        type: 'get',
+        data: {
+            'file_id': id,
+        },
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (err) {
+            console.log(err);
+        }
+    });
+}
