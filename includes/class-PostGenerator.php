@@ -95,7 +95,7 @@ class PostGenerator extends WP_Widget
                     <th>Action</th>
                 </tr>
                 <?php foreach ($records as $key => $record): ?>
-                    <tr>
+                    <tr id="<?php echo $current_widget_id .'-record-'.$key?>">
                         <td><?php echo $record['title'] ?></td>
                         <td><?php echo $record['issue_year'] ?></td>
                         <td><?php echo $record['description'] ?></td>
