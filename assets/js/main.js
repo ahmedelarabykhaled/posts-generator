@@ -25,6 +25,7 @@ jQuery(document).ready(function ($) {
 
             // hidden input
             $button.siblings('input.fileURL').val(attachment.url);
+            $button.siblings('div.fileURL').append("<em>URL: </em>" + attachment.url);
 
         });
 
@@ -46,12 +47,10 @@ function deleteFile(id, url, widget_base_id, current_widget_id) {
         },
         success: function (data) {
             removeFromTable(id, current_widget_id)
-            console.log("Response", data);
         },
         error: function (err) {
             // insert some text in ui 
             // TO-DO
-            console.log("err");
         }
     });
 }

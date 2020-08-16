@@ -78,7 +78,7 @@ class PostGenerator extends WP_Widget
         $display_year = isset($instance['display_year']) ? (bool)$instance['display_year'] : false;
         $records = isset($instance['records']) ? $instance['records'] : '';
 
-        $delete_record_handler = plugins_url('posts-generator/includes/services/deleteFile.php');
+        $delete_record_handler = plugins_url('posts-generator/includes/services/delete-record.php');
         $widget_base_id        = 'widget_'.$this->id_base;
         $current_widget_id     = strval(end(explode("-",$this->id)));
         ?>
@@ -92,7 +92,7 @@ class PostGenerator extends WP_Widget
                     <th>Title</th>
                     <th>Year</th>
                     <th>Description</th>
-                    <th>Action</th>
+                    <th></th>
                 </tr>
                 <?php foreach ($records as $key => $record): ?>
                     <tr id="<?php echo $current_widget_id .'-record-'.$key?>">
@@ -100,17 +100,17 @@ class PostGenerator extends WP_Widget
                         <td><?php echo $record['issue_year'] ?></td>
                         <td><?php echo $record['description'] ?></td>
                         <td>
-                            <input 
-                                type="button" 
-                                value="X" 
+                            <a 
+                                class="del-btn"
+                                value ="d"
                                 onclick="deleteFile(
                                     <?=$key?>,
                                     '<?=$delete_record_handler?>',
                                     '<?=$widget_base_id?>',
                                     '<?=$current_widget_id?>'
                                     )"
-                            >
-                        </td>
+
+                            ><span class="dashicons dashicons-trash"></span></a>
                     </tr>
                 <?php endforeach ?>
             </table>
@@ -131,7 +131,7 @@ class PostGenerator extends WP_Widget
         <p class="post-generator-data">
             <label for="<?php echo $this->get_field_name('title'); ?>"><?php _e('Title:'); ?></label>
             <input
-                    class="widefat"
+                    class="widefat title"
                     type="text"
                     placeholder="Title..."
                     id="<?php echo $this->get_field_id('title'); ?>"
@@ -163,14 +163,24 @@ class PostGenerator extends WP_Widget
                     id="<?php echo $this->get_field_name('description'); ?>"
                     name="<?php echo $this->get_field_name('description'); ?>"
             ><?php echo esc_attr($description) ?></textarea>
-
-            <input
-                    type="text"
-                    name= <?php echo $this->get_field_name('file_url'); ?>
-                    class="fileURL"
-                    value="">
-            <button class="upload_image_button">Upload Image</button>
         </p>
+        <p>
+            <div class="media-widget-control">
+                <div class="media-widget-preview media_gallery">
+                    <div class="attachment-media-view">
+                        <button type="button" class="upload_image_button placeholder button-add-media ">Add File</button>
+                        <div class="widefat fileURL"></div>
+                        <input
+                            type="hidden"
+                            name= <?php echo $this->get_field_name('file_url'); ?>
+                            class="fileURL"
+                            value=""
+                        >
+                    </div>
+                </div>
+            </div>
+        </p>
+
 
         <?php
     }

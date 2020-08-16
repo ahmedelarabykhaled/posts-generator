@@ -19,6 +19,7 @@ function delete_record($widget_base,$current_widget_id,$record_id){
     $widget_instances[$current_widget_id] = $current_widget;
 
     update_option($widget_base,$widget_instances);
+    
     die('0');
 }
 
