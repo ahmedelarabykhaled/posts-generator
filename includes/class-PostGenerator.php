@@ -34,17 +34,10 @@ class PostGenerator extends WP_Widget
     {
         echo $args['before_widget'];
         ?>
-        <div class="issue-year">
-            <form action="">
-                <label for="issue_year">Issue Year:</label>
-                <select name="issue_year" id="issue_year">
-                    <option value="1">11</option>
-                    <option value="1">11</option>
-                    <option value="1">11</option>
-                    <option value="1">11</option>
-                </select>
-            </form>
-        </div>
+        <hr>;
+            <?php print_r($instance);?>
+            <?php Global $hook_suffix; echo $hook_suffix?>
+        <hr>
         <?php
         echo $args['after_widget'];
     }
@@ -58,56 +51,19 @@ class PostGenerator extends WP_Widget
      */
     public function form($instance)
     {
+        echo '<hr>';
+        print_r($instance);
+        echo '<hr>';
 
         $instance = wp_parse_args((array)$instance, array('display_year' => '', 'records' => ''));
 
         $display_year = isset($instance['display_year']) ? (bool)$instance['display_year'] : false;
         $records = isset($instance['records']) ? $instance['records'] : '';
 
-        $delete_record_handler = plugins_url('posts-generator/includes/services/delete-record.php');
-        $widget_base_id        = 'widget_'.$this->id_base;
-        $current_widget_id     = strval(end(explode("-",$this->id)));
+        // $delete_record_handler = plugins_url('posts-generator/includes/services/delete-record.php');
+        // $widget_base_id        = 'widget_'.$this->id_base;
+        // $current_widget_id     = strval(end(explode("-",$this->id)));
         ?>
-
-        <!-- <input type="button" class="islam123_"  value="click">
-        <input type="hidden" class="record_id" value="<?php echo $current_widget_id?>"> -->
-        <?php if ($records): ?>
-        <div class="pg-records-table widefat">
-            <hr>
-            <table>
-                <tr>
-                    <th>Title</th>
-                    <th>Year</th>
-                    <th>Description</th>
-                    <th></th>
-                </tr>
-                <?php foreach ($records as $key => $record): ?>
-                    <tr id="<?php echo $current_widget_id .'-record-'.$key?>">
-                        <td><?php echo $record['title'] ?></td>
-                        <td><?php echo $record['issue_year'] ?></td>
-                        <td><?php echo $record['description'] ?></td>
-                        <td>
-                            <a class="del-btn"><span class="dashicons dashicons-trash"></span></a>
-                            <input type="hidden" class="record_id" value="<?php echo $key?>">
-                            <input type="hidden" class="widget_base" value="<?php echo $widget_base_id?>">
-                            <input type="hidden" class="current_widget_id" value="<?php echo $current_widget_id?>">
-
-                            <!-- <a 
-                                class="del-btn"
-                                value ="<?php echo $key;?>"
-                                onclick="deleteFile(
-                                    <?=$key?>,
-                                    '<?=$delete_record_handler?>',
-                                    '<?=$widget_base_id?>',
-                                    '<?=$current_widget_id?>'
-                                    )"
-                            ><span class="dashicons dashicons-trash"></span></a> -->
-                    </tr>
-                <?php endforeach ?>
-            </table>
-            <hr>
-        </div>
-    <?php endif ?>
         <p>
             <input
                 type="checkbox"
@@ -115,63 +71,206 @@ class PostGenerator extends WP_Widget
                 id="<?php echo $this->get_field_id('display_year'); ?>"
                 name="<?php echo $this->get_field_name('display_year'); ?>"
                 <?php checked($display_year); ?>
-            /><label for="<?php echo $this->get_field_id('display_year'); ?>"><?php _e('Display Issue Year'); ?></label><br/>
+            /><label for="<?php echo $this->get_field_id('display_year'); ?>"><?php _e('Display Issue Year'); ?></label>
+        </p>
+        <?php           
+        ?>
+        <style>
+            /* Style the buttons that are used to open and close the accordion panel */
+            .accordion {
+                background-color: #eee;
+                color: #444;
+                cursor: pointer;
+                padding: 18px;
+                width: 100%;
+                text-align: left;
+                border: none;
+                outline: none;
+                transition: 0.4s;
+            }
+            
+            /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+            .active, .accordion:hover {
+                background-color: #ccc;
+            }
+            
+            /* Style the accordion panel. Note: hidden by default */
+            .panel {
+                padding: 0 18px;
+                background-color: white;
+                display: none;
+                overflow: hidden;
+            }
+  
+        </style>
+        <script>
+            var acc = document.getElementsByClassName("accordion");
+            var i;
 
+            for (i = 0; i < acc.length; i++) {
+                acc[i].addEventListener("click", function (e) {
+                    /* Toggle between adding and removing the "active" class,
+                    to highlight the button that controls the panel */
+                    e.preventDefault();
+                    this.classList.toggle("active");
 
-            <!-- Record Data -->
+                    /* Toggle between hiding and showing the active panel */
+                    var panel = this.nextElementSibling;
+                    if (panel.style.display === "block") {
+                        panel.style.display = "none";
+                    } else {
+                        panel.style.display = "block";
+                    }
+                });
+            }
+        </script>
+        <?php foreach ($records as $key=>$record):?>
+        <div>
+            <button class="accordion"><?php echo $record['title']?></button>
+            <div class="panel">
+                <p class="post-generator-data">
+                    <label for="<?php echo $this->get_field_name('title'); ?>"><?php _e('Title:'); ?></label>
+                    <input
+                        class="widefat title"
+                        type="text"
+                        placeholder="Title..."
+                        name="<?php echo $this->get_field_name('title[]'); ?>"
+                        value="<?php echo esc_attr($record['title']); ?>"
+                    />
+                    <label for="<?php echo $this->get_field_name('issue_year'); ?>"><?php _e('Issue Year:'); ?></label>
+                    <input
+                        class="widefat"
+                        type="number"
+                        min="1900"
+                        max="2100"
+                        step="1"
+                        name="<?php echo $this->get_field_name('issue_year[]'); ?>"
+                        value="<?php echo esc_attr($record['issue_year']) ?>"
+                    >
+                    <label for="<?php echo $this->get_field_name('description[]'); ?>"><?php _e('Description:'); ?></label>
+                    <textarea
+                        class="widefat"
+                        cols="30"
+                        rows="2"
+                        name="<?php echo $this->get_field_name('description[]'); ?>"
+                    ><?php echo esc_attr($record['description']) ?></textarea>
+                    <p>
+                        <div class="media-widget-control">
+                            <div class="media-widget-preview media_gallery">
+                                <div class="attachment-media-view">
+                                    <button type="button" class="upload_image_button placeholder button-add-media ">Add File</button>
+                                    <div class="widefat fileURL"></div>
+                                    <input
+                                        type="hidden"
+                                        name= <?php echo $this->get_field_name('file_url[]'); ?>
+                                        class="fileURL"
+                                        value="<?php echo $record['file_url']?>"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </p>
+                </p>
+            </div>
+        </div>
+        <?php endforeach?>
+
+        <hr>
+        <div>Add New Record</div>
+        <!-- Record Data -->
         <p class="post-generator-data">
             <label for="<?php echo $this->get_field_name('title'); ?>"><?php _e('Title:'); ?></label>
             <input
-                    class="widefat title"
-                    type="text"
-                    placeholder="Title..."
-                    id="<?php echo $this->get_field_id('title'); ?>"
-                    name="<?php echo $this->get_field_name('title'); ?>"
-                    value="<?php echo esc_attr($title); ?>"/>
-
-            <input
-                    type="hidden"
-                    name="<?php echo $this->get_field_name('record_id'); ?>"
-                    value="<?php echo uniqid(); ?>"
+                class="widefat title"
+                type="text"
+                placeholder="Title..."
+                id="<?php echo $this->get_field_id('title'); ?>"
+                name="<?php echo $this->get_field_name('title[]'); ?>"
+                value="<?php echo esc_attr($title); ?>"
             />
-
             <label for="<?php echo $this->get_field_name('issue_year'); ?>"><?php _e('Issue Year:'); ?></label>
             <input
-                    class="widefat"
-                    type="number"
-                    min="1900"
-                    max="2100"
-                    step="1"
-                    id="<?php echo $this->get_field_name('issue_year'); ?>"
-                    name="<?php echo $this->get_field_name('issue_year'); ?>"
-                    value="<?php echo esc_attr($issue_year) ?>"
+                class="widefat"
+                type="number"
+                min="1900"
+                max="2100"
+                step="1"
+                id="<?php echo $this->get_field_name('issue_year'); ?>"
+                name="<?php echo $this->get_field_name('issue_year[]'); ?>"
+                value="<?php echo esc_attr($issue_year) ?>"
             >
-            <label for="<?php echo $this->get_field_name('description'); ?>"><?php _e('Description:'); ?></label>
+            <label for="<?php echo $this->get_field_name('description[]'); ?>"><?php _e('Description:'); ?></label>
             <textarea
-                    class="widefat"
-                    cols="30"
-                    rows="2"
-                    id="<?php echo $this->get_field_name('description'); ?>"
-                    name="<?php echo $this->get_field_name('description'); ?>"
+                class="widefat"
+                cols="30"
+                rows="2"
+                id="<?php echo $this->get_field_name('description'); ?>"
+                name="<?php echo $this->get_field_name('description[]'); ?>"
             ><?php echo esc_attr($description) ?></textarea>
-        </p>
-        <p>
-            <div class="media-widget-control">
-                <div class="media-widget-preview media_gallery">
-                    <div class="attachment-media-view">
-                        <button type="button" class="upload_image_button placeholder button-add-media ">Add File</button>
-                        <div class="widefat fileURL"></div>
-                        <input
-                            type="hidden"
-                            name= <?php echo $this->get_field_name('file_url'); ?>
-                            class="fileURL"
-                            value="test-file-val"
-                        >
+            <p>
+                <div class="media-widget-control">
+                    <div class="media-widget-preview media_gallery">
+                        <div class="attachment-media-view">
+                            <button type="button" class="upload_image_button placeholder button-add-media ">Add File</button>
+                            <div class="widefat fileURL"></div>
+                            <input
+                                type="hidden"
+                                name= <?php echo $this->get_field_name('file_url[]'); ?>
+                                class="fileURL"
+                                value="test-file-val"
+                            >
+                        </div>
                     </div>
                 </div>
-            </div>
+            </p>
         </p>
-
+        <!-- Second Record -->
+        <!-- <p class="post-generator-data">
+            <label for="<?php echo $this->get_field_name('title2'); ?>"><?php _e('Title:'); ?></label>
+            <input
+                class="widefat title"
+                type="text"
+                placeholder="Title..."
+                id="<?php echo $this->get_field_id('title2'); ?>"
+                name="<?php echo $this->get_field_name('title[]'); ?>"
+                value="<?php echo esc_attr($title); ?>"
+            />
+            <label for="<?php echo $this->get_field_name('issue_year1'); ?>"><?php _e('Issue Year:'); ?></label>
+            <input
+                class="widefat"
+                type="number"
+                min="1900"
+                max="2100"
+                step="1"
+                id="<?php echo $this->get_field_name('issue_year1'); ?>"
+                name="<?php echo $this->get_field_name('issue_year[]'); ?>"
+                value="<?php echo esc_attr($issue_year) ?>"
+            >
+            <label for="<?php echo $this->get_field_name('description1'); ?>"><?php _e('Description:'); ?></label>
+            <textarea
+                class="widefat"
+                cols="30"
+                rows="2"
+                id="<?php echo $this->get_field_name('description1'); ?>"
+                name="<?php echo $this->get_field_name('description[]'); ?>"
+            ><?php echo esc_attr($description) ?></textarea>
+            <p>
+                <div class="media-widget-control">
+                    <div class="media-widget-preview media_gallery">
+                        <div class="attachment-media-view">
+                            <button type="button" class="upload_image_button placeholder button-add-media ">Add File</button>
+                            <div class="widefat fileURL"></div>
+                            <input
+                                type="hidden"
+                                name= <?php echo $this->get_field_name('file_url[]'); ?>
+                                class="fileURL"
+                                value="test-file-val"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </p>
+        </p> -->
 
         <?php
     }
@@ -188,6 +287,24 @@ class PostGenerator extends WP_Widget
      */
     public function update($new_instance, $old_instance)
     {
+        // parse arrays to records associative array
+        $records = array();
+        foreach($new_instance['title'] as $key => $title){
+            $issue_year = $new_instance['issue_year'][$key];
+            $description = $new_instance['description'][$key];
+            $new_instance['file_url'][$key];
+            if($title){
+                array_push($records,array(
+                    'title'       => $title,
+                    'issue_year'  => $issue_year,
+                    'description' => $description,
+                    'file_url'    => $file_url
+                ));
+            }
+            
+        }
+        $new_instance['records'] = $records;
+        return $new_instance;
 
         $instance = array();
 

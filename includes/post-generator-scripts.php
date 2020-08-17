@@ -13,7 +13,7 @@ function pg_add_scripts(){
 add_action('admin_enqueue_scripts', 'pg_add_admin_scripts');
 function pg_add_admin_scripts($hook){
 
-  if( 'widgets.php' != $hook ) return;
+  // if( 'widgets.php' != $hook ) return;
 
   wp_enqueue_style('pg-admin-style',
       plugins_url(). '/posts-generator/assets/css/admin.css'
