@@ -154,6 +154,8 @@ class PostGenerator extends WP_Widget
                     let childNodes = removeBtns[j].parentNode.querySelectorAll('input,textarea');
                     childNodes.forEach(function(element){
                         element.value = '';
+                        // var event = new Event('change');
+                        // element.dispatchEvent(event);
                     })
                     // removeBtns[j].parentNode.remove();
                 })
@@ -192,22 +194,12 @@ class PostGenerator extends WP_Widget
                         rows="2"
                         name="<?php echo $this->get_field_name('description[]'); ?>"
                     ><?php echo esc_attr($record['description']) ?></textarea>
-                    <p>
-                        <div class="media-widget-control">
-                            <div class="media-widget-preview media_gallery">
-                                <div class="attachment-media-view">
-                                    <button type="button" class="upload_image_button placeholder button-add-media ">Add File</button>
-                                    <div class="widefat fileURL"></div>
-                                    <input
-                                        type="hidden"
-                                        name= <?php echo $this->get_field_name('file_url[]'); ?>
-                                        class="fileURL"
-                                        value="<?php echo $record['file_url']?>"
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                    </p>
+                    <input
+                        type="text"
+                        name= <?php echo $this->get_field_name('file_url[]'); ?>
+                        class="fileURL widefat"
+                        value="<?php echo $record['file_url']?>"
+                    >
                 </p>
             </div>
         </div>
@@ -245,69 +237,24 @@ class PostGenerator extends WP_Widget
                 name="<?php echo $this->get_field_name('description[]'); ?>"
             ><?php echo esc_attr($description) ?></textarea>
             <p>
+                <label for="">File URL: </label>
                 <div class="media-widget-control">
                     <div class="media-widget-preview media_gallery">
                         <div class="attachment-media-view">
-                            <button type="button" class="upload_image_button placeholder button-add-media ">Add File</button>
+                            <!-- <button type="button" class="upload_image_button placeholder button-add-media ">Add File</button> -->
                             <div class="widefat fileURL"></div>
+                            
                             <input
-                                type="hidden"
+                                type="text"
                                 name= <?php echo $this->get_field_name('file_url[]'); ?>
-                                class="fileURL"
-                                value="test-file-val"
+                                class="fileURL widefat"
+                                value=""
                             >
                         </div>
                     </div>
                 </div>
             </p>
         </p>
-        <!-- Second Record -->
-        <!-- <p class="post-generator-data">
-            <label for="<?php echo $this->get_field_name('title2'); ?>"><?php _e('Title:'); ?></label>
-            <input
-                class="widefat title"
-                type="text"
-                placeholder="Title..."
-                id="<?php echo $this->get_field_id('title2'); ?>"
-                name="<?php echo $this->get_field_name('title[]'); ?>"
-                value="<?php echo esc_attr($title); ?>"
-            />
-            <label for="<?php echo $this->get_field_name('issue_year1'); ?>"><?php _e('Issue Year:'); ?></label>
-            <input
-                class="widefat"
-                type="number"
-                min="1900"
-                max="2100"
-                step="1"
-                id="<?php echo $this->get_field_name('issue_year1'); ?>"
-                name="<?php echo $this->get_field_name('issue_year[]'); ?>"
-                value="<?php echo esc_attr($issue_year) ?>"
-            >
-            <label for="<?php echo $this->get_field_name('description1'); ?>"><?php _e('Description:'); ?></label>
-            <textarea
-                class="widefat"
-                cols="30"
-                rows="2"
-                id="<?php echo $this->get_field_name('description1'); ?>"
-                name="<?php echo $this->get_field_name('description[]'); ?>"
-            ><?php echo esc_attr($description) ?></textarea>
-            <p>
-                <div class="media-widget-control">
-                    <div class="media-widget-preview media_gallery">
-                        <div class="attachment-media-view">
-                            <button type="button" class="upload_image_button placeholder button-add-media ">Add File</button>
-                            <div class="widefat fileURL"></div>
-                            <input
-                                type="hidden"
-                                name= <?php echo $this->get_field_name('file_url[]'); ?>
-                                class="fileURL"
-                                value="test-file-val"
-                            >
-                        </div>
-                    </div>
-                </div>
-            </p>
-        </p> -->
 
         <?php
     }
@@ -327,9 +274,9 @@ class PostGenerator extends WP_Widget
         // parse arrays to records associative array
         $records = array();
         foreach($new_instance['title'] as $key => $title){
-            $issue_year = $new_instance['issue_year'][$key];
+            $issue_year  = $new_instance['issue_year'][$key];
             $description = $new_instance['description'][$key];
-            $new_instance['file_url'][$key];
+            $file_url    = $new_instance['file_url'][$key];
             if($title){
                 array_push($records,array(
                     'title'       => $title,
