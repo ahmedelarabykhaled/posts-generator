@@ -51,18 +51,10 @@ class PostGenerator extends WP_Widget
      */
     public function form($instance)
     {
-        echo '<hr>';
-        print_r($instance);
-        echo '<hr>';
-
         $instance = wp_parse_args((array)$instance, array('display_year' => '', 'records' => ''));
 
         $display_year = isset($instance['display_year']) ? (bool)$instance['display_year'] : false;
         $records = isset($instance['records']) ? $instance['records'] : '';
-
-        // $delete_record_handler = plugins_url('posts-generator/includes/services/delete-record.php');
-        // $widget_base_id        = 'widget_'.$this->id_base;
-        // $current_widget_id     = strval(end(explode("-",$this->id)));
         ?>
         <p>
             <input
@@ -71,7 +63,7 @@ class PostGenerator extends WP_Widget
                 id="<?php echo $this->get_field_id('display_year'); ?>"
                 name="<?php echo $this->get_field_name('display_year'); ?>"
                 <?php checked($display_year); ?>
-            /><label for="<?php echo $this->get_field_id('display_year'); ?>"><?php _e('Display Issue Year'); ?></label>
+            /> <label for="<?php echo $this->get_field_id('display_year'); ?>"><?php _e('Display Issue Year'); ?></label>
         </p>
         <?php           
         ?>
@@ -105,7 +97,7 @@ class PostGenerator extends WP_Widget
         </style>
         <script>
             var acc = document.getElementsByClassName("accordion");
-            var i;
+            let i;
 
             for (i = 0; i < acc.length; i++) {
                 acc[i].addEventListener("click", function (e) {
@@ -124,8 +116,24 @@ class PostGenerator extends WP_Widget
                 });
             }
         </script>
+        <script>
+            let removeBtns = document.getElementsByClassName('remove-btn');
+            for(let j = 0; j < removeBtns.length; j++){
+                removeBtns[j].addEventListener("click",function(e){
+                    e.preventDefault();
+                    let childNodes = removeBtns[j].parentNode.querySelectorAll('input,textarea');
+                    childNodes.forEach(function(element){
+                        element.value = '';
+                    })
+                    // removeBtns[j].parentNode.remove();
+                })
+            }
+            console.log(removeBtns);            
+        </script>
         <?php foreach ($records as $key=>$record):?>
+        <hr>
         <div>
+            <button class="remove-btn">Remove</button>
             <button class="accordion"><?php echo $record['title']?></button>
             <div class="panel">
                 <p class="post-generator-data">
@@ -174,9 +182,8 @@ class PostGenerator extends WP_Widget
             </div>
         </div>
         <?php endforeach?>
-
-        <hr>
-        <div>Add New Record</div>
+        <hr><br>
+        <h3>Add New Record</h3>
         <!-- Record Data -->
         <p class="post-generator-data">
             <label for="<?php echo $this->get_field_name('title'); ?>"><?php _e('Title:'); ?></label>
@@ -305,38 +312,6 @@ class PostGenerator extends WP_Widget
         }
         $new_instance['records'] = $records;
         return $new_instance;
-
-        $instance = array();
-
-        $instance['display_year'] = (!empty($new_instance['display_year'])) ? 1 : 0;
-
-
-        $title = (!empty($new_instance['title'])) ? strip_tags($new_instance['title']) : '';
-        $issue_year = (!empty($new_instance['issue_year'])) ? strip_tags($new_instance['issue_year']) : '';
-        $description = (!empty($new_instance['description'])) ? strip_tags($new_instance['description']) : '';
-        $file_url = (!empty($new_instance['file_url'])) ? strip_tags($new_instance['file_url']) : '';
-
-        // Newly added record
-        $record_data = array(
-            "title" => $title,
-            "issue_year" => $issue_year,
-            "description" => $description,
-            "file_url" => $file_url
-        );
-
-        if (!$title || !$issue_year || !$description || !$file_url) {
-            $instance['records'] = $old_instance['records'];
-            return $instance;
-        }
-
-        // Appending record to widget records
-        if ($old_instance['records']) {
-            array_push($old_instance['records'], $record_data);
-            $instance['records'] = $old_instance['records'];
-        } else {
-            $instance['records'] = array($record_data);
-        }
-        return $instance;
     }
 
 }
