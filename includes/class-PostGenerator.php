@@ -97,9 +97,8 @@ class PostGenerator extends WP_Widget
         </style>
         <script>
             var acc = document.getElementsByClassName("accordion");
-            let i;
 
-            for (i = 0; i < acc.length; i++) {
+            for (let i = 0; i < acc.length; i++) {
                 acc[i].addEventListener("click", function (e) {
                     /* Toggle between adding and removing the "active" class,
                     to highlight the button that controls the panel */
@@ -117,25 +116,23 @@ class PostGenerator extends WP_Widget
             }
         </script>
         <script>
-            let removeBtns = document.getElementsByClassName('remove-btn');
-            for(let j = 0; j < removeBtns.length; j++){
-                removeBtns[j].addEventListener("click",function(e){
-                    e.preventDefault();
-                    let childNodes = removeBtns[j].parentNode.querySelectorAll('input,textarea');
-                    childNodes.forEach(function(element){
-                        element.value = '';
-                        // var event = new Event('change');
-                        // element.dispatchEvent(event);
-                    })
-                    // removeBtns[j].parentNode.remove();
-                })
-            }
-            console.log(removeBtns);            
+            // let removeBtns = document.getElementsByClassName('remove-btn');
+            // for(let j = 0; j < removeBtns.length; j++){
+            //     removeBtns[j].addEventListener("click",function(e){
+            //         e.preventDefault();
+            //         let childNodes = removeBtns[j].parentNode.querySelectorAll('input,textarea');
+            //         childNodes.forEach(function(element){
+            //             element.value = '';
+            //         })
+            //         // removeBtns[j].parentNode.remove();
+            //     })
+            // }
+            // console.log(removeBtns);            
         </script>
-        <?php foreach ($records as $key=>$record):?>
+        <?php foreach ($records as $key => $record):?>
         <hr>
         <div>
-            <button class="remove-btn">Remove</button>
+            <!-- <button class="remove-btn">Remove</button> -->
             <button class="accordion"><?php echo $record['title']?></button>
             <div class="panel">
                 <p class="post-generator-data">
