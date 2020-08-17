@@ -146,23 +146,20 @@ class PostGenerator extends WP_Widget
             }
         </script>
         <script>
-            // let removeBtns = document.getElementsByClassName('remove-btn');
-            // for(let j = 0; j < removeBtns.length; j++){
-            //     removeBtns[j].addEventListener("click",function(e){
-            //         e.preventDefault();
-            //         let childNodes = removeBtns[j].parentNode.querySelectorAll('input,textarea');
-            //         childNodes.forEach(function(element){
-            //             element.value = '';
-            //         })
-            //         // removeBtns[j].parentNode.remove();
-            //     })
-            // }
-            // console.log(removeBtns);            
+            var removeBtns = document.getElementsByClassName('remove-btn');
+            for(let j = 0; j < removeBtns.length; j++){
+                removeBtns[j].addEventListener("click",function(e){
+                    e.preventDefault();
+                    e.target.nextElementSibling.value = 'yes';
+                    console.log(e.target.nextElementSibling.value);
+                    // removeBtns[j].parentNode.remove();
+                })
+            }
         </script>
         <?php foreach ($records as $key => $record):?>
         <hr>
         <div>
-            <!-- <button class="remove-btn">Remove</button> -->
+            <button class="remove-btn">Remove</button>
             <button class="accordion"><?php echo $record['title']?></button>
             <div class="panel">
                 <p class="post-generator-data">
@@ -191,6 +188,8 @@ class PostGenerator extends WP_Widget
                         rows="2"
                         name="<?php echo $this->get_field_name('description[]'); ?>"
                     ><?php echo esc_attr($record['description']) ?></textarea>
+
+                    <label for="">File URL: </label>
                     <input
                         type="text"
                         name= <?php echo $this->get_field_name('file_url[]'); ?>
@@ -279,7 +278,7 @@ class PostGenerator extends WP_Widget
                     'title'       => $title,
                     'issue_year'  => $issue_year,
                     'description' => $description,
-                    'file_url'    => $file_url
+                    'file_url'    => $file_url,
                 ));
             }
             
