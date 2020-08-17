@@ -57,7 +57,7 @@ class PostGenerator extends WP_Widget
             <tr>
                 <td><?= $record['title'] ?></td>
                 <td>
-                    <a href="<?= $record['file_url'] ?>">
+                    <a href="<?= $record['file_url'] ?>" download>
                         <img style="width:30px;" src="<?= wp_get_attachment_url( 6439 ) ?>" alt="file image">
                     </a>
                 </td>
