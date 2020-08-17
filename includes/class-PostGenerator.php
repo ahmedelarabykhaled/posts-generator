@@ -33,11 +33,41 @@ class PostGenerator extends WP_Widget
     public function widget($args, $instance)
     {
         echo $args['before_widget'];
+        if (isset($instance['display_year']))
+        {
         ?>
-        <hr>;
-            <?php print_r($instance);?>
-            <?php Global $hook_suffix; echo $hook_suffix?>
-        <hr>
+        <div>
+            <label>سنه الاصدار </label>
+            <select name="year">
+                <option value="2000">2000</option>
+                <option value="2002">2002</option>
+                <option value="2004">2004</option>
+            </select>
+        </div>
+            <?php
+        }
+            ?>
+        <table>
+            <tbody>
+
+        <?php
+        foreach ($instance['records'] as $record)
+        {
+            ?>
+            <tr>
+                <td><?= $record['title'] ?></td>
+                <td>
+                    <a href="<?= $record['file_url'] ?>">
+                        <img style="width:30px;" src="<?= wp_get_attachment_url( 6439 ) ?>" alt="file image">
+                    </a>
+                </td>
+                <td><?= $record['description'] ?></td>
+            </tr>
+            <?php
+        }
+        ?>
+            </tbody>
+        </table>
         <?php
         echo $args['after_widget'];
     }
